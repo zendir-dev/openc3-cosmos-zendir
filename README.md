@@ -1,24 +1,59 @@
-# OpenC3 COSMOS Plugin
+# Zendir OpenC3 Plugin
 
-See the [OpenC3](https://openc3.com) documentation for all things OpenC3.
+This plugin enables communication from the Zendir products into OpenC3 via standard [CCSDS](https://ccsds.org/) protocols, including the space packets and standard message structures, formatted in XML. Data can be streamed from the Zendir environment, including Zendir Studio, Space Range and the Zendir API. For more information, visit the [Zendir Documentation](https://docs.zendir.io).
 
-Update this comment with your own description.
+For more information on [OpenC3](https://openc3.com), see the public documentation. Zendir is not responsible for OpenC3 development, nor is Zendir affiliated or responsible for OpenC3 or its products. This plugin is simply an integration into their COSMOS tool.
+
+---
+
+## Installation
+
+Install the base OpenC3 COSMOS project from the OpenC3 GitHub page. This can be done via:
+
+```sh
+git clone https://github.com/OpenC3/cosmos-project.git
+```
+
+This includes the relevant source files for running the project. For Windows or Mac users, make sure to have **Docker Desktop** installed and started, as it will require a Linux container to run correctly.
+
+For more information on installing OpenC3 COSMOS, please refer to the OpenC3 installation guide that can be found [here](https://docs.openc3.com/docs/getting-started/installation).
+
+Once the repository is installed, clone this repository into the root of the `cosmos-project` directory, aptly named `openc3-cosmos-zendir`.
+
+---
 
 ## Getting Started
 
-1. Edit the .gemspec file fields: name, summary, description, authors, email, and homepage
-1. Update the LICENSE.txt file with your company name
+To start the OpenC3 COSMOS application, run the `openc3.sh` file, or the `openc3.bat` file for Windows users, in the root directory. Make sure to include the keyword argument `run` to start the container.
 
-## Building non-tool / widget plugins
+```sh
+.\openc3.sh run
+```
 
-1. <Path to COSMOS installation>/openc3.sh cli rake build VERSION=X.Y.Z (or openc3.bat for Windows)
-   - VERSION is required
-   - gem file will be built locally
+> For Windows or Mac users, make sure that Docker engine has started. Once started, running the COSMOS container for the first time make take some time to install the required dependencies.
 
-## Building tool / widget plugins using a local Ruby/Node/Yarn/Rake Environment
+Next, the `.gem` file must be installed correctly. This will contain the binaries associated with the Plugin that COSMOS is able to import. Navigate to the `openc3-cosmos-zendir` folder and run the following command:
 
-1. yarn
-1. rake build VERSION=1.0.0
+```sh
+..\openc3.sh cli rake build VERSION=1.0.0 
+```
+
+This step is only required whenever changes have been made to the Zendir plugin. If no changes are made, the Ruby files are not required to be recreated.
+
+---
+
+## Adding the Plugin
+
+Once the container is running, navigate to the container webpage (likely http://localhost:2900 unless configured differently)
+
+1. Go to the OpenC3 Admin Console, Plugins Tab
+2. Click the 'Install from File' button and choose the `openc3-cosmos-zendri-[VERSION].gem` file
+3. Fill out plugin parameters for the associated server information
+4. Click **Install**
+
+If any changes are made to the plugin, simply **upgrade** the plugin, which will overwrite any details the plugin has.
+
+---
 
 ## Building tool / widget plugins using Docker and the openc3-node container
 
@@ -26,40 +61,20 @@ If you don’t have a local node environment, you can use our openc3-node contai
 
 Mac / Linux:
 
-```
+```sh
 docker run -it -v `pwd`:/openc3/local:z -w /openc3/local docker.io/openc3inc/openc3-node sh
 ```
 
 Windows:
 
-```
+```sh
 docker run -it -v %cd%:/openc3/local -w /openc3/local docker.io/openc3inc/openc3-node sh
 ```
 
-1. yarn
-1. rake build VERSION=1.0.0
+1. ``yarn``
+1. ``rake build VERSION=1.0.0``
 
-## Installing into OpenC3 COSMOS
-
-1. Go to the OpenC3 Admin Tool, Plugins Tab
-1. Click the install button and choose your plugin.gem file
-1. Fill out plugin parameters
-1. Click Install
-
-## Contributing
-
-We encourage you to contribute to OpenC3!
-
-Contributing is easy.
-
-1. Fork the project
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-Before any contributions can be incorporated we do require all contributors to agree to a Contributor License Agreement
-
-This protects both you and us and you retain full rights to any code you write.
+---
 
 ## License
 
