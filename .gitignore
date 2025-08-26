@@ -1,3 +1,6 @@
+node_modules
+
+# Ruby specific ignores:
 *.gem
 *.rbc
 /.config

@@ -1,0 +1,10 @@
+# Set VARIABLEs here to allow variation in your plugin
+
+VARIABLE mqtt_host mqtt.zendir.io
+VARIABLE mqtt_port 1883
+VARIABLE game_name SPACE RANGE
+VARIABLE team_id 0
+
+TARGET ZENDIR ZENDIR
+INTERFACE MQTT_INT openc3/interfaces/mqtt_stream_interface.py <%= mqtt_host %> <%= mqtt_port %> False zendir/output Zendir/SpaceRange/<%=game_name%>/<%=team_id%>/Telemetry
+  MAP_TARGET ZENDIR
