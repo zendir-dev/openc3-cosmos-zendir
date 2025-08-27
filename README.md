@@ -26,12 +26,12 @@ Once the repository is installed, clone this repository into the root of the `co
 
 To start the OpenC3 COSMOS application, run the `openc3.sh` file, or the `openc3.bat` file for Windows users, in the root directory. Make sure to include the keyword argument `run` to start the container.
 
-##### Linux / Mac users:
+##### Linux / Mac:
 ```sh
 .\openc3.sh run
 ```
 
-##### Windows users:
+##### Windows:
 ```sh
 .\openc3.bat run
 ```

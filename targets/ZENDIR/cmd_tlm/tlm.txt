@@ -1,4 +1,4 @@
-TELEMETRY <%= target_name %> APM_XML BIG_ENDIAN "APM XML Structure"
+TELEMETRY ZENDIR APM_XML BIG_ENDIAN "APM XML Structure"
   VIRTUAL
   ACCESSOR patch_xml_accessor.py
   APPEND_ITEM Q1 64 FLOAT
@@ -10,7 +10,7 @@ TELEMETRY <%= target_name %> APM_XML BIG_ENDIAN "APM XML Structure"
   APPEND_ITEM QC 64 FLOAT
     KEY "/apm/body/segment/data/quaternionState/quaternion/QC/text()"
 
-TELEMETRY ZENDIR APM_XML BIG_ENDIAN "Telemetry description"
+TELEMETRY ZENDIR APM BIG_ENDIAN "Telemetry description"
   APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
   APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
     STATE TLM 0
@@ -28,7 +28,7 @@ TELEMETRY ZENDIR APM_XML BIG_ENDIAN "Telemetry description"
     OVERFLOW TRUNCATE
   APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
   APPEND_ITEM XML 0 BLOCK "APM XML Data"
-    READ_CONVERSION hash_read_conversion.py TLM <%= target_name %> APM_XML
+    READ_CONVERSION hash_read_conversion.py TLM ZENDIR APM_XML
   ITEM Q1 0 0 DERIVED
     READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q1
   ITEM Q2 0 0 DERIVED
