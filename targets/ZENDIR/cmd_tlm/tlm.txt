@@ -1,3 +1,7 @@
+# ---------------------------------------------------------
+# Attitude Parameter Message (APM) - APID 10
+# ---------------------------------------------------------
+
 TELEMETRY ZENDIR APM_XML BIG_ENDIAN "APM XML Structure"
   VIRTUAL
   ACCESSOR patch_xml_accessor.py
@@ -9,8 +13,40 @@ TELEMETRY ZENDIR APM_XML BIG_ENDIAN "APM XML Structure"
     KEY "/apm/body/segment/data/quaternionState/quaternion/Q3/text()"
   APPEND_ITEM QC 64 FLOAT
     KEY "/apm/body/segment/data/quaternionState/quaternion/QC/text()"
+  APPEND_ITEM Q1_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/quaternionState/quaternionDot/Q1_DOT/text()"
+  APPEND_ITEM Q2_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/quaternionState/quaternionDot/Q2_DOT/text()"
+  APPEND_ITEM Q3_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/quaternionState/quaternionDot/Q3_DOT/text()"
+  APPEND_ITEM QC_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/quaternionState/quaternionDot/QC_DOT/text()"
+  APPEND_ITEM ANGLE_1 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_1/text()"
+  APPEND_ITEM ANGLE_2 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_2/text()"
+  APPEND_ITEM ANGLE_3 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_3/text()"
+  APPEND_ITEM ANGLE_1_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_1_DOT/text()"
+  APPEND_ITEM ANGLE_2_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_2_DOT/text()"
+  APPEND_ITEM ANGLE_3_DOT 64 FLOAT
+    KEY "/apm/body/segment/data/eulerAngleState/ANGLE_3_DOT/text()"
+  APPEND_ITEM IXX 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IXX/text()"
+  APPEND_ITEM IYY 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IYY/text()"
+  APPEND_ITEM IZZ 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IZZ/text()"
+  APPEND_ITEM IXY 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IXY/text()"
+  APPEND_ITEM IXZ 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IXZ/text()"
+  APPEND_ITEM IYZ 64 FLOAT
+    KEY "/apm/body/segment/data/inertiaState/IYZ/text()"
 
-TELEMETRY ZENDIR APM BIG_ENDIAN "Telemetry description"
+TELEMETRY ZENDIR APM BIG_ENDIAN "Packet that contains attitude data from the spacecraft."
   APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
   APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
     STATE TLM 0
@@ -18,7 +54,7 @@ TELEMETRY ZENDIR APM BIG_ENDIAN "Telemetry description"
   APPEND_ITEM CCSDSSHF      1 UINT   "CCSDS secondary header flag"
     STATE FALSE 0
     STATE TRUE 1
-  APPEND_ID_ITEM CCSDSAPID 11 UINT 1 "CCSDS application process id"
+  APPEND_ID_ITEM CCSDSAPID 11 UINT 10 "CCSDS application process id"
   APPEND_ITEM CCSDSSEQFLAGS 2 UINT   "CCSDS sequence flags"
     STATE FIRST 1
     STATE CONT 0
@@ -29,12 +65,145 @@ TELEMETRY ZENDIR APM BIG_ENDIAN "Telemetry description"
   APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
   APPEND_ITEM XML 0 BLOCK "APM XML Data"
     READ_CONVERSION hash_read_conversion.py TLM ZENDIR APM_XML
-  ITEM Q1 0 0 DERIVED
+  ITEM Q1 0 0 DERIVED "The first quaternion rotation component (X-axis)"
     READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q1
-  ITEM Q2 0 0 DERIVED
+  ITEM Q2 0 0 DERIVED "The second quaternion rotation component (Y-axis)"
     READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q2
-  ITEM Q3 0 0 DERIVED
+  ITEM Q3 0 0 DERIVED "The third quaternion rotation component (Z-axis)"
     READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q3
-  ITEM QC 0 0 DERIVED
+  ITEM QC 0 0 DERIVED "The fourth quaternion rotation component (scalar)"
     READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR QC
+  ITEM Q1_DOT 0 0 DERIVED "Rate of change of first quaternion component (X-axis angular rate)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q1_DOT
+  ITEM Q2_DOT 0 0 DERIVED "Rate of change of second quaternion component (Y-axis angular rate)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q2_DOT
+  ITEM Q3_DOT 0 0 DERIVED "Rate of change of third quaternion component (Z-axis angular rate)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Q3_DOT
+  ITEM QC_DOT 0 0 DERIVED "Rate of change of fourth quaternion component (scalar rate)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR QC_DOT
+  ITEM ANGLE_1 0 0 DERIVED "First Euler rotation angle around X-axis (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_1
+  ITEM ANGLE_2 0 0 DERIVED "Second Euler rotation angle around Y-axis (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_2
+  ITEM ANGLE_3 0 0 DERIVED "Third Euler rotation angle around Z-axis (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_3
+  ITEM ANGLE_1_DOT 0 0 DERIVED "Angular rate around X-axis (degrees/second)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_1_DOT
+  ITEM ANGLE_2_DOT 0 0 DERIVED "Angular rate around Y-axis (degrees/second)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_2_DOT
+  ITEM ANGLE_3_DOT 0 0 DERIVED "Angular rate around Z-axis (degrees/second)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ANGLE_3_DOT
+  ITEM IXX 0 0 DERIVED "Principal moment of inertia around X-axis (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IXX
+  ITEM IYY 0 0 DERIVED "Principal moment of inertia around Y-axis (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IYY
+  ITEM IZZ 0 0 DERIVED "Principal moment of inertia around Z-axis (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IZZ
+  ITEM IXY 0 0 DERIVED "Cross product of inertia XY component (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IXY
+  ITEM IXZ 0 0 DERIVED "Cross product of inertia XZ component (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IXZ
+  ITEM IYZ 0 0 DERIVED "Cross product of inertia YZ component (kg⋅m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR IYZ
+  PROCESSOR XMLPROCESSOR hash_processor.py XML
+
+# ---------------------------------------------------------
+# Orbital Parameter Message (OPM) - APID 20
+# ---------------------------------------------------------
+
+TELEMETRY ZENDIR OPM_XML BIG_ENDIAN "OPM XML Structure"
+  VIRTUAL
+  ACCESSOR patch_xml_accessor.py
+  APPEND_ITEM X 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/X/text()"
+  APPEND_ITEM Y 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Y/text()"
+  APPEND_ITEM Z 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Z/text()"
+  APPEND_ITEM X_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/X_DOT/text()"
+  APPEND_ITEM Y_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Y_DOT/text()"
+  APPEND_ITEM Z_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Z_DOT/text()"
+  APPEND_ITEM SEMI_MAJOR_AXIS 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/SEMI_MAJOR_AXIS/text()"
+  APPEND_ITEM ECCENTRICITY 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/ECCENTRICITY/text()"
+  APPEND_ITEM INCLINATION 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/INCLINATION/text()"
+  APPEND_ITEM RA_OF_ASC_NODE 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/RA_OF_ASC_NODE/text()"
+  APPEND_ITEM ARG_OF_PERICENTER 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/ARG_OF_PERICENTER/text()"
+  APPEND_ITEM TRUE_ANOMALY 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/TRUE_ANOMALY/text()"
+  APPEND_ITEM GM 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/GM/text()"
+  APPEND_ITEM MASS 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/MASS/text()"
+  APPEND_ITEM SOLAR_RAD_AREA 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/SOLAR_RAD_AREA/text()"
+  APPEND_ITEM SOLAR_RAD_COEFF 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/SOLAR_RAD_COEFF/text()"
+  APPEND_ITEM DRAG_AREA 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/DRAG_AREA/text()"
+  APPEND_ITEM DRAG_COEFF 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/DRAG_COEFF/text()"
+
+TELEMETRY ZENDIR OPM BIG_ENDIAN "Packet that contains orbit data from the spacecraft."
+  APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
+  APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
+    STATE TLM 0
+    STATE CMD 1
+  APPEND_ITEM CCSDSSHF      1 UINT   "CCSDS secondary header flag"
+    STATE FALSE 0
+    STATE TRUE 1
+  APPEND_ID_ITEM CCSDSAPID 11 UINT 20 "CCSDS application process id"
+  APPEND_ITEM CCSDSSEQFLAGS 2 UINT   "CCSDS sequence flags"
+    STATE FIRST 1
+    STATE CONT 0
+    STATE LAST 2
+    STATE NOGROUP 3
+  APPEND_ITEM CCSDSSEQCNT  14 UINT   "CCSDS packet sequence count"
+    OVERFLOW TRUNCATE
+  APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
+  APPEND_ITEM XML 0 BLOCK "OPM XML Data"
+    READ_CONVERSION hash_read_conversion.py TLM ZENDIR OPM_XML
+  ITEM X 0 0 DERIVED "X position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR X
+  ITEM Y 0 0 DERIVED "Y position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Y
+  ITEM Z 0 0 DERIVED "Z position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Z
+  ITEM X_DOT 0 0 DERIVED "X velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR X_DOT
+  ITEM Y_DOT 0 0 DERIVED "Y velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Y_DOT
+  ITEM Z_DOT 0 0 DERIVED "Z velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Z_DOT
+  ITEM SEMI_MAJOR_AXIS 0 0 DERIVED "Semi-major axis of orbital ellipse (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR SEMI_MAJOR_AXIS
+  ITEM ECCENTRICITY 0 0 DERIVED "Orbital eccentricity (dimensionless)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ECCENTRICITY
+  ITEM INCLINATION 0 0 DERIVED "Orbital inclination angle (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR INCLINATION
+  ITEM RA_OF_ASC_NODE 0 0 DERIVED "Right ascension of ascending node (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR RA_OF_ASC_NODE
+  ITEM ARG_OF_PERICENTER 0 0 DERIVED "Argument of perigee (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ARG_OF_PERICENTER
+  ITEM TRUE_ANOMALY 0 0 DERIVED "True anomaly angle (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR TRUE_ANOMALY
+  ITEM GM 0 0 DERIVED "Standard gravitational parameter (km³/s²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR GM
+  ITEM MASS 0 0 DERIVED "Spacecraft mass (kg)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR MASS
+  ITEM SOLAR_RAD_AREA 0 0 DERIVED "Solar radiation pressure area (m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR SOLAR_RAD_AREA
+  ITEM SOLAR_RAD_COEFF 0 0 DERIVED "Solar radiation pressure coefficient (dimensionless)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR SOLAR_RAD_COEFF
+  ITEM DRAG_AREA 0 0 DERIVED "Atmospheric drag area (m²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR DRAG_AREA
+  ITEM DRAG_COEFF 0 0 DERIVED "Atmospheric drag coefficient (dimensionless)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR DRAG_COEFF
   PROCESSOR XMLPROCESSOR hash_processor.py XML
