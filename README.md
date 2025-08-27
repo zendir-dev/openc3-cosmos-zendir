@@ -26,16 +26,28 @@ Once the repository is installed, clone this repository into the root of the `co
 
 To start the OpenC3 COSMOS application, run the `openc3.sh` file, or the `openc3.bat` file for Windows users, in the root directory. Make sure to include the keyword argument `run` to start the container.
 
+##### Linux / Mac users:
 ```sh
 .\openc3.sh run
+```
+
+##### Windows users:
+```sh
+.\openc3.bat run
 ```
 
 > For Windows or Mac users, make sure that Docker engine has started. Once started, running the COSMOS container for the first time make take some time to install the required dependencies.
 
 Next, the `.gem` file must be installed correctly. This will contain the binaries associated with the Plugin that COSMOS is able to import. Navigate to the `openc3-cosmos-zendir` folder and run the following command:
 
+##### Linux / Mac:
 ```sh
 ..\openc3.sh cli rake build VERSION=1.0.0 
+```
+
+##### Windows:
+```sh
+..\openc3.bat cli rake build VERSION=1.0.0 
 ```
 
 This step is only required whenever changes have been made to the Zendir plugin. If no changes are made, the Ruby files are not required to be recreated.
@@ -44,38 +56,42 @@ This step is only required whenever changes have been made to the Zendir plugin.
 
 ## Adding the Plugin
 
-Once the container is running, navigate to the container webpage (likely http://localhost:2900 unless configured differently)
+Once the container is running, navigate to the container webpage (likely http://localhost:2900 unless configured differently) and follow the steps below.
 
-1. Go to the OpenC3 Admin Console, Plugins Tab
+1. Go to the OpenC3 COSMOS **Admin Console** and find the **Plugins** Tab
 2. Click the 'Install from File' button and choose the `openc3-cosmos-zendri-[VERSION].gem` file
 3. Fill out plugin parameters for the associated server information
 4. Click **Install**
 
-If any changes are made to the plugin, simply **upgrade** the plugin, which will overwrite any details the plugin has.
+![Installing Plugin from the Admin Console](./images/openc3_plugin_install.png)
+
+If any changes are made to the plugin source code, simply **upgrade** the plugin, which will overwrite any details the plugin has.
+
+> To change the details for the server information for streaming the data, simply click the three dots and press 'Edit Details'.
 
 ---
 
 ## Building tool / widget plugins using Docker and the openc3-node container
 
-If you don’t have a local node environment, you can use our openc3-node container to build custom tools and custom widgets
+If you don’t have a local node environment, you can use the OpenC3 `openc3-node` container to build custom tools and custom widgets.
 
-Mac / Linux:
+##### Linux / Mac:
 
 ```sh
 docker run -it -v `pwd`:/openc3/local:z -w /openc3/local docker.io/openc3inc/openc3-node sh
 ```
 
-Windows:
+##### Windows:
 
 ```sh
 docker run -it -v %cd%:/openc3/local -w /openc3/local docker.io/openc3inc/openc3-node sh
 ```
 
 1. ``yarn``
-1. ``rake build VERSION=1.0.0``
+2. ``rake build VERSION=1.0.0``
 
 ---
 
 ## License
 
-This OpenC3 plugin is released under the MIT License. See [LICENSE.txt](LICENSE.txt)
+This OpenC3 plugin is released under the MIT License. See [LICENSE.txt](LICENSE.txt).
