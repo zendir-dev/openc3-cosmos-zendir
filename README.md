@@ -2,7 +2,7 @@
 
 This plugin enables communication from the Zendir products into OpenC3 via standard [CCSDS](https://ccsds.org/) protocols, including the space packets and standard message structures, formatted in XML. Data can be streamed from the Zendir environment, including Zendir Studio, Space Range and the Zendir API. For more information, visit the [Zendir Documentation](https://docs.zendir.io).
 
-For more information on [OpenC3](https://openc3.com), see the public documentation. Zendir is not responsible for OpenC3 development, nor is Zendir affiliated or responsible for OpenC3 or its products. This plugin is simply an integration into their COSMOS tool.
+For more information on [OpenC3](https://openc3.com), see the public documentation. Zendir is not responsible for OpenC3 development, nor is Zendir affiliated with OpenC3 or its products. This plugin is simply an integration into their COSMOS tool.
 
 ---
 
