@@ -2,7 +2,7 @@
 
 VARIABLE mqtt_host mqtt.zendir.io
 VARIABLE mqtt_port 1883
-VARIABLE game_name SPACE RANGE
+VARIABLE game_name SPACE_RANGE
 VARIABLE frequency 500
 
 TARGET ZENDIR ZENDIR

@@ -1,0 +1,52 @@
+# ---------------------------------------------------------
+# Solar Panel Message (SOLAR_PANEL) - APID 111
+# ---------------------------------------------------------
+
+TELEMETRY ZENDIR SOLAR_PANEL_XML BIG_ENDIAN "Solar Panel XML Structure"
+  VIRTUAL
+  ACCESSOR patch_xml_accessor.py
+  APPEND_ITEM TIME 64 FLOAT
+    KEY "/SolarPanel/Time/text()"
+  APPEND_ITEM UTC 1024 STRING
+    KEY "/SolarPanel/UTC/text()"
+  APPEND_ITEM POWER 64 FLOAT
+    KEY "/SolarPanel/Data/Power/text()"
+  APPEND_ITEM VOLTAGE 64 FLOAT
+    KEY "/SolarPanel/Data/Voltage/text()"
+  APPEND_ITEM TOTAL_AREA 64 FLOAT
+    KEY "/SolarPanel/Data/TotalArea/text()"
+  APPEND_ITEM PROJECTED_AREA 64 FLOAT
+    KEY "/SolarPanel/Data/ProjectedArea/text()"
+
+TELEMETRY ZENDIR SOLAR_PANEL BIG_ENDIAN "Packet that contains solar panel metrics from the spacecraft."
+  APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
+  APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
+    STATE TLM 0
+    STATE CMD 1
+  APPEND_ITEM CCSDSSHF      1 UINT   "CCSDS secondary header flag"
+    STATE FALSE 0
+    STATE TRUE 1
+  APPEND_ID_ITEM CCSDSAPID 11 UINT 111 "CCSDS application process id"
+  APPEND_ITEM CCSDSSEQFLAGS 2 UINT   "CCSDS sequence flags"
+    STATE FIRST 1
+    STATE CONT 0
+    STATE LAST 2
+    STATE NOGROUP 3
+  APPEND_ITEM CCSDSSEQCNT  14 UINT   "CCSDS packet sequence count"
+    OVERFLOW TRUNCATE
+  APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
+  APPEND_ITEM XML 0 BLOCK "Solar Panel XML Data"
+    READ_CONVERSION hash_read_conversion.py TLM ZENDIR SOLAR_PANEL_XML
+  ITEM TIME 0 0 DERIVED "Solar panel metric timestamp (seconds)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR TIME
+  ITEM UTC 0 0 DERIVED "UTC timestamp of the solar panel data"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR UTC
+  ITEM POWER 0 0 DERIVED "Generated power (W)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR POWER
+  ITEM VOLTAGE 0 0 DERIVED "Output voltage (V)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR VOLTAGE
+  ITEM TOTAL_AREA 0 0 DERIVED "Total panel area (m^2)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR TOTAL_AREA
+  ITEM PROJECTED_AREA 0 0 DERIVED "Sun projected area (m^2)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR PROJECTED_AREA
+  PROCESSOR XMLPROCESSOR hash_processor.py XML

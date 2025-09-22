@@ -1,0 +1,64 @@
+# ---------------------------------------------------------
+# Battery Message (BATTERY) - APID 110
+# ---------------------------------------------------------
+
+TELEMETRY ZENDIR BATTERY_XML BIG_ENDIAN "Battery XML Structure"
+  VIRTUAL
+  ACCESSOR patch_xml_accessor.py
+  APPEND_ITEM TIME 64 FLOAT
+    KEY "/Battery/Time/text()"
+  APPEND_ITEM UTC 1024 STRING
+    KEY "/Battery/UTC/text()"
+  APPEND_ITEM CHARGE_FRACTION 64 FLOAT
+    KEY "/Battery/Data/ChargeFraction/text()"
+  APPEND_ITEM CAPACITY 64 FLOAT
+    KEY "/Battery/Data/Capacity/text()"
+  APPEND_ITEM CHARGE 64 FLOAT
+    KEY "/Battery/Data/Charge/text()"
+  APPEND_ITEM VOLTAGE_IN 64 FLOAT
+    KEY "/Battery/Data/VoltageIn/text()"
+  APPEND_ITEM VOLTAGE_OUT 64 FLOAT
+    KEY "/Battery/Data/VoltageOut/text()"
+  APPEND_ITEM CURRENT_IN 64 FLOAT
+    KEY "/Battery/Data/CurrentIn/text()"
+  APPEND_ITEM CURRENT_OUT 64 FLOAT
+    KEY "/Battery/Data/CurrentOut/text()"
+
+TELEMETRY ZENDIR BATTERY BIG_ENDIAN "Packet that contains battery metrics from the spacecraft."
+  APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
+  APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
+    STATE TLM 0
+    STATE CMD 1
+  APPEND_ITEM CCSDSSHF      1 UINT   "CCSDS secondary header flag"
+    STATE FALSE 0
+    STATE TRUE 1
+  APPEND_ID_ITEM CCSDSAPID 11 UINT 110 "CCSDS application process id"
+  APPEND_ITEM CCSDSSEQFLAGS 2 UINT   "CCSDS sequence flags"
+    STATE FIRST 1
+    STATE CONT 0
+    STATE LAST 2
+    STATE NOGROUP 3
+  APPEND_ITEM CCSDSSEQCNT  14 UINT   "CCSDS packet sequence count"
+    OVERFLOW TRUNCATE
+  APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
+  APPEND_ITEM XML 0 BLOCK "Battery XML Data"
+    READ_CONVERSION hash_read_conversion.py TLM ZENDIR BATTERY_XML
+  ITEM TIME 0 0 DERIVED "Battery metric timestamp (seconds)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR TIME
+  ITEM UTC 0 0 DERIVED "UTC timestamp of the battery data"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR UTC
+  ITEM CHARGE_FRACTION 0 0 DERIVED "Charge fraction (0-1)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR CHARGE_FRACTION
+  ITEM CAPACITY 0 0 DERIVED "Battery capacity (Amp Hours)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR CAPACITY
+  ITEM CHARGE 0 0 DERIVED "Current charge (Amp Hours)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR CHARGE
+  ITEM VOLTAGE_IN 0 0 DERIVED "Input voltage (V)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR VOLTAGE_IN
+  ITEM VOLTAGE_OUT 0 0 DERIVED "Output voltage (V)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR VOLTAGE_OUT
+  ITEM CURRENT_IN 0 0 DERIVED "Input current (A)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR CURRENT_IN
+  ITEM CURRENT_OUT 0 0 DERIVED "Output current (A)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR CURRENT_OUT
+  PROCESSOR XMLPROCESSOR hash_processor.py XML

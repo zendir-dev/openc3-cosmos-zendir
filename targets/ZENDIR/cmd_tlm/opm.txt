@@ -1,0 +1,84 @@
+# ---------------------------------------------------------
+# Orbital Parameter Message (OPM) - APID 20
+# ---------------------------------------------------------
+
+TELEMETRY ZENDIR OPM_XML BIG_ENDIAN "OPM XML Structure"
+  VIRTUAL
+  ACCESSOR patch_xml_accessor.py
+  APPEND_ITEM X 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/X/text()"
+  APPEND_ITEM Y 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Y/text()"
+  APPEND_ITEM Z 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Z/text()"
+  APPEND_ITEM X_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/X_DOT/text()"
+  APPEND_ITEM Y_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Y_DOT/text()"
+  APPEND_ITEM Z_DOT 64 FLOAT
+    KEY "/opm/body/segment/data/stateVector/Z_DOT/text()"
+  APPEND_ITEM SEMI_MAJOR_AXIS 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/SEMI_MAJOR_AXIS/text()"
+  APPEND_ITEM ECCENTRICITY 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/ECCENTRICITY/text()"
+  APPEND_ITEM INCLINATION 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/INCLINATION/text()"
+  APPEND_ITEM RA_OF_ASC_NODE 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/RA_OF_ASC_NODE/text()"
+  APPEND_ITEM ARG_OF_PERICENTER 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/ARG_OF_PERICENTER/text()"
+  APPEND_ITEM TRUE_ANOMALY 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/TRUE_ANOMALY/text()"
+  APPEND_ITEM GM 64 FLOAT
+    KEY "/opm/body/segment/data/osculatingKeplerianElements/GM/text()"
+  APPEND_ITEM MASS 64 FLOAT
+    KEY "/opm/body/segment/data/spacecraftParameters/MASS/text()"
+
+TELEMETRY ZENDIR OPM BIG_ENDIAN "Packet that contains orbit data from the spacecraft."
+  APPEND_ITEM CCSDSVER      3 UINT   "CCSDS packet version number (See CCSDS 133.0-B-1)"
+  APPEND_ITEM CCSDSTYPE     1 UINT   "CCSDS packet type (command or telemetry)"
+    STATE TLM 0
+    STATE CMD 1
+  APPEND_ITEM CCSDSSHF      1 UINT   "CCSDS secondary header flag"
+    STATE FALSE 0
+    STATE TRUE 1
+  APPEND_ID_ITEM CCSDSAPID 11 UINT 20 "CCSDS application process id"
+  APPEND_ITEM CCSDSSEQFLAGS 2 UINT   "CCSDS sequence flags"
+    STATE FIRST 1
+    STATE CONT 0
+    STATE LAST 2
+    STATE NOGROUP 3
+  APPEND_ITEM CCSDSSEQCNT  14 UINT   "CCSDS packet sequence count"
+    OVERFLOW TRUNCATE
+  APPEND_ITEM CCSDSLENGTH  16 UINT   "CCSDS packet data length"
+  APPEND_ITEM XML 0 BLOCK "OPM XML Data"
+    READ_CONVERSION hash_read_conversion.py TLM ZENDIR OPM_XML
+  ITEM X 0 0 DERIVED "X position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR X
+  ITEM Y 0 0 DERIVED "Y position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Y
+  ITEM Z 0 0 DERIVED "Z position component in J2000 frame (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Z
+  ITEM X_DOT 0 0 DERIVED "X velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR X_DOT
+  ITEM Y_DOT 0 0 DERIVED "Y velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Y_DOT
+  ITEM Z_DOT 0 0 DERIVED "Z velocity component in J2000 frame (km/s)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR Z_DOT
+  ITEM SEMI_MAJOR_AXIS 0 0 DERIVED "Semi-major axis of orbital ellipse (km)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR SEMI_MAJOR_AXIS
+  ITEM ECCENTRICITY 0 0 DERIVED "Orbital eccentricity (dimensionless)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ECCENTRICITY
+  ITEM INCLINATION 0 0 DERIVED "Orbital inclination angle (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR INCLINATION
+  ITEM RA_OF_ASC_NODE 0 0 DERIVED "Right ascension of ascending node (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR RA_OF_ASC_NODE
+  ITEM ARG_OF_PERICENTER 0 0 DERIVED "Argument of perigee (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR ARG_OF_PERICENTER
+  ITEM TRUE_ANOMALY 0 0 DERIVED "True anomaly angle (degrees)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR TRUE_ANOMALY
+  ITEM GM 0 0 DERIVED "Standard gravitational parameter (km³/s²)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR GM
+  ITEM MASS 0 0 DERIVED "Spacecraft mass (kg)"
+    READ_CONVERSION openc3/conversions/processor_conversion.py XMLPROCESSOR MASS
+  PROCESSOR XMLPROCESSOR hash_processor.py XML
